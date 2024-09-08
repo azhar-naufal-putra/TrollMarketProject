@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{layout :: head}">
+</head>
+<body >
+    <header th:replace="~{layout :: header}"></header>
+    <nav th:replace="~{layout :: nav}"></nav>
+
+    <div class="authentication-wrapper">
+        <div th:replace="~{layout :: menu}"></div>
+        <main class="admin-form">
+            <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+            <form method="post" th:action="@{/admin/register}" th:object="${dto}">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <label for="username">Username*</label>
+                            </td>
+                            <td>
+                                <input type="text" name="username" placeholder="Username" th:value="*{username}">
+                                <div class="field-validation-error" th:errors="*{username}"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="password">Password*</label>
+                            </td>
+                            <td>
+                                <input type="password" name="password" placeholder="Password">
+                                <div class="field-validation-error" th:errors="*{password}"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="passwordConfirmation">Pasword Confirmation*</label>
+                            </td>
+                            <td>
+                                <input type="password" name="passwordConfirmation" placeholder="Password Confirmation">
+                                <div class="field-validation-error" th:errors="${dto}"></div>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                    <button type="submit">Save new admin</button>
+            </form>
+        </main>
+    </div>
+</body>
+</html>

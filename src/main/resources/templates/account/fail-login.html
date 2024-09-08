@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="~{layout :: head}">
+</head>
+<body class="authentication-body">
+<div class="authentication-wrapper">
+    <main>
+        <h1>Sign In Fail</h1>
+        <p>Your username or your password or your role is incorrect, please try again</p>
+        <div class="link-container">
+            <a th:href="@{/account/login}">Try to login again</a>
+        </div>
+    </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{layout :: head}">
+</head>
+<body>
+    <div class="modal-wrapper disable">
+		<main class="merchandise-info">
+            <table>
+                <tbody>   
+                    <tr>
+                        <td><label>Name</label></td>
+                        <td name="merchandiseName">
+                        </td>
+                    </tr>            
+                    <tr>
+                        <td><label>Category</label></td>
+                        <td name="categoryName">
+                        </td>
+                    </tr>            
+                    <tr>
+                        <td><label>Description</label></td>
+                        <td name="description">
+                        </td>
+                    </tr>            
+                    <tr>
+                        <td><label>Price</label></td>
+                        <td name="price">
+                        </td>
+                    </tr>            
+                    <tr>
+                        <td><label>Discontinue</label></td>
+                        <td name="discontinue">
+                        </td>
+                    </tr>          
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>
+                            <button class="green-button close-button" type="button">Close</button>
+                        </td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+		</main>
+	</div>
+    <header th:replace="~{layout :: header}"></header>
+    <nav th:replace="~{layout :: nav}"></nav>
+    <main>
+        <div th:replace="~{layout :: menu}"></div>
+        <div class="grid-container shipper-index">
+		    <a th:href="@{/merchandise/merchandise-form}" class="green-button create-button">Add New Merchandise</a>
+			<table>
+				<thead>
+					<th>Action</th>
+					<th>Name</th>
+					<th>Category</th>
+                    <th>Discontinue</th>
+				</thead>
+				<tbody>
+					<tr
+							th:each="merchandise:${merchandiseGrid}"
+							th:object="${merchandise}"
+					>
+						<td>
+							<a th:href="@{/merchandise/merchandise-form(merchandiseId=*{merchandiseId})}" th:classappend="*{editable} ? 'disabled' : ''" class="green-button edit-button">Edit</a>
+							<a th:href="@{/merchandise/merchandise-delete(merchandiseId=*{merchandiseId}, username=${#authentication.getPrincipal().getUsername()})}" th:classappend="*{editable} ? 'disabled' : ''" class="green-button delete-button">Delete</a>
+                            <a class="green-button info-button" th:attr="merchandise-id=*{merchandiseId}">Info</a>
+                            <form action="/merchandise/merchandise-discontinue" method="get" class="service-wrapper">
+                                <input type="hidden" name="merchandiseId" th:value="*{merchandiseId}">
+                                <input type="hidden" name="username" th:value="${#authentication.getPrincipal().getUsername()}">
+                                <button class="green-button service-button" th:disabled="*{discontinue} == 'Yes'">Discontinue</button>
+                            </form>
+						</td>
+						<td th:text="*{merchandiseName}"></td>
+						<td th:text="*{categoryName}"></td>
+						<td th:text="*{discontinue}"></td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="4">
+							<div class="pagination">
+								<div th:text="|Page ${currentPage} of ${totalPages}|"></div>
+								<div>
+									<a th:each="page:${#numbers.sequence(1, totalPages)}"
+									   th:href="@{/merchandise(page=${page}, username=${#authentication.getPrincipal().getUsername()})}"
+									   th:text="${page}"
+											class="number"></a>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</tfoot>
+			</table>    
+		</div>
+    </main>
+    <script th:src="@{/js/merchandise.js}"></script>
+</body>
+</html>

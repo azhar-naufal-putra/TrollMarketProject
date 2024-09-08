@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{layout :: head}">
+</head>
+<body>
+    <div class="modal-wrapper form disable">
+        <form method="post" class="upsert-form">
+            <input type="hidden" name="username" id="username" th:value="${#authentication.getPrincipal().getUsername()}"/>
+            <table>
+                <tbody>   
+                    <tr>
+                        <td>Add Balance:</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="number" id="balance" name="balance" placeholder="Minimum 10k">
+                            <div class="field-validation-error"></div>
+                        </td>
+                    </tr>         
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>
+                            <button class="green-button add-button" type="button">Add Balance</button>
+                            <button class="green-button cancel-button" type="button">Cancel</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </form>
+	</div>
+    <header th:replace="~{layout :: header}"></header>
+    <nav th:replace="~{layout :: nav}"></nav>
+    <main>
+        <div th:replace="~{layout :: menu}"></div>
+        <table class="profile-info" th:object="${profile}">
+            <tbody>
+                <tr>
+                    <td><label>Name</label></td>
+                    <td th:text="*{name}"></td>
+                </tr>
+                <tr>
+                    <td><label>Role</label></td>
+                    <td th:text="*{role}"></td>
+                </tr>
+                <tr>
+                    <td><label>Address</label></td>
+                    <td th:text="*{address}"></td>
+                </tr>
+                <tr>
+                    <td><label>Balance</label></td>
+                    <td th:text="*{balance}"></td>
+                    <td><button class="green-button balance-button" th:if="${#authentication.getAuthorities().toArray()[0].authority} == 'Buyer'">Add Balance</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="grid-container">
+            <span>My Transaction History</span>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Shipment</th>
+                        <th>Total Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        th:each="history:*{profileHistoryGrid}"
+                        th:object="${history}"
+                    >
+                        <td th:text="*{orderDate}"></td>
+                        <td th:text="*{merchandiseName}"></td>
+                        <td th:text="*{quantity}"></td>
+                        <td th:text="*{shipperName}"></td>
+                        <td th:text="*{totalPrice}"></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+					<tr>
+						<td colspan="5">
+							<div class="pagination">
+								<div th:text="|page ${currentPage} of ${totalPages}|"></div>
+								<div>
+									<a th:each="page : ${#numbers.sequence(1, totalPages)}"
+									   th:href="@{/profile(
+                                                        page=${page},
+                                                        username=${#authentication.getPrincipal().getUsername()}
+                                                        )}"
+									   th:text="${page}" class="number"></a>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</tfoot>
+            </table>
+        
+        </div>
+    </main>
+    <script th:src="@{/js/profile.js}"></script>
+</body>
+</html>

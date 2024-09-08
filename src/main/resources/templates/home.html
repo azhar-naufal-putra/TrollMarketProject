@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{layout :: head}">
+</head>
+<body>
+    <header th:replace="~{layout :: header}"></header>
+    <nav th:replace="~{layout :: nav}"></nav>
+    <main class="home-main">
+        <div class="home-container">
+            <h2>
+                Welcome to Troll Market
+            </h2>
+            <div class="logo">
+                <img th:src="@{/troll.png}" alt="">
+            </div>
+            <h3>
+                This is a marketplace where promotions and discounts are never offered. Since this is merely an assignment for you, there is no need for discounts.
+            </h3>
+        </div>
+    </main>
+</body>
+</html>

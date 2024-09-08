@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="~{layout :: head}">
+</head>
+<body class="authentication-body">
+    <div class="authentication-wrapper">
+        <main>
+			<h1>Access Denied</h1>
+			<p>Your role are not authorized to access this functionality of the system.</p>
+			<p>Contact your administrator to get more information about your role authorization.</p>
+			<div class="link-container">
+			    <a th:href="@{/}">Back to home page</a>
+			</div>
+        </main>
+    </div>
+</body>
+</html>

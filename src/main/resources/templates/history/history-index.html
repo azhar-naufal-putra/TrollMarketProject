@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{layout :: head}">
+</head>
+<body>
+    <header th:replace="~{layout :: header}"></header>
+    <nav th:replace="~{layout :: nav}"></nav>
+    <main>
+        <div th:replace="~{layout :: menu}"></div>
+		<form method="get" class="filter" th:action="@{/history}">
+			<table>
+				<tbody>
+					<tr>
+						<td>
+							<label for="sellerUsername">Seller</label>
+						</td>
+						<td>
+							<select name="sellerUsername" id="sellerUsername">
+                                <option th:value=null>Select Seller...</option>
+                                <option
+                                    th:each="seller:${sellerOptions}"
+                                    th:object="${seller}"
+                                    th:text="*{name}"
+                                    th:value="*{username}"
+                                    th:selected="${sellerUsername} == ${seller.username}"
+                                ></option>
+                            </select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="buyerUsername">Buyer</label>
+						</td>
+						<td>
+							<select name="buyerUsername" id="buyerUsername">
+                                <option th:value=null>Select Buyer...</option>
+                                <option
+                                    th:each="buyer:${buyerOptions}"
+                                    th:object="${buyer}"
+                                    th:text="*{name}"
+                                    th:value="*{username}"
+                                    th:selected="${buyerUsername} == ${buyer.username}"
+                                ></option>
+                            </select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<button class="green-button" type="submit">Search</button>
+		</form>
+		<div class="grid-container shop-index">
+			<table>
+				<thead>
+					<th>Date</th>
+					<th>Seller</th>
+					<th>Buyer</th>
+					<th>Product</th>
+					<th>Quantity</th>
+					<th>Shipment</th>
+					<th>TotalPrice</th>
+				</thead>
+				<tbody>
+					<tr th:each="history:${historyGrid}" th:object="${history}">
+						<td th:text="*{orderDate}"></td>
+						<td th:text="*{sellerName}"></td>
+						<td th:text="*{buyerName}"></td>
+						<td th:text="*{merchandiseName}"></td>
+						<td th:text="*{quantity}"></td>
+                        <td th:text="*{shipperName}"></td>
+                        <td th:text="*{totalPrice}"></td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="7">
+							<div class="pagination">
+								<div th:text="|page ${currentPage} of ${totalPages}|"></div>
+								<div>
+									<a th:each="page : ${#numbers.sequence(1, totalPages)}"
+									   th:href="@{/history(
+                                                        page=${page},
+                                                        buyerUsername=${buyerUsername}, 
+                                                        sellerUsername=${sellerUsername}
+                                                        )}"
+									   th:text="${page}" class="number"></a>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	</main>
+</body>
+</html>

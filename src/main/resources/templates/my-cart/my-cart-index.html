@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{layout :: head}">
+</head>
+<body>
+    <div class="modal-wrapper form disable">
+        <form method="post" class="upsert-form">
+            <input type="hidden" name="username" id="username" th:value="${#authentication.getPrincipal().getUsername()}"/>
+            <input type="hidden" name="orderId" id="orderId" th:value="${myCartGrid.orderId}">
+            <input type="hidden" name="myBalance" id="myBalance">
+            <input type="hidden" name="totalPayment" id="totalPayment">
+            <div class="field-validation-error"></div>
+            <table>
+                <tbody>   
+                    <tr>
+                        <td>
+
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>
+                            <button class="green-button purchase-button" type="button">Purchase Anyway</button>
+                            <button class="green-button cancel-button" type="button">Cancel</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </form>
+	</div>
+    <header th:replace="~{layout :: header}"></header>
+    <nav th:replace="~{layout :: nav}"></nav>
+
+    <main th:object="${myCartGrid}">
+        <div th:replace="~{layout :: menu}"></div>
+        <div class="grid-container">
+            <button class="green-button purchase-popup-button" type="submit">Purchase All</button>
+            <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Shipment</th>
+                        <th>Seller</th>
+                        <th>Total Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        th:each="order:*{orders}"
+                        th:object="${order}"
+                    >
+                        <td>
+                            <a th:href="@{/my-cart/remove-order(orderId=${myCartGrid.orderId}, merchandiseId=${order.merchandiseId}, username=${#authentication.getPrincipal().getUsername()})}" class="green-button">Remove</a>
+                        </td>
+                        <td th:text="*{merchandiseName}"></td>
+                        <td th:text="*{quantity}"></td>
+                        <td th:text="*{shipperName}"></td>
+                        <td th:text="*{sellerName}"></td>
+                        <td th:text="*{totalPrice}"></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+					<tr>
+						<td colspan="6">
+							<div class="pagination">
+								<div th:text="|page ${currentPage} of ${totalPages}|"></div>
+								<div>
+									<a th:each="page : ${#numbers.sequence(1, totalPages)}"
+									   th:href="@{/my-cart(
+                                                        page=${page},
+                                                        username=${#authentication.getPrincipal().getUsername()}
+                                                        )}"
+									   th:text="${page}" class="number"></a>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</tfoot>
+            </table>
+        
+        </div>
+    </main>
+    <script th:src="@{/js/my-cart.js}"></script>
+</body>
+</html>

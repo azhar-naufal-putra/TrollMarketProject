@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="~{layout :: head}">
+</head>
+<body class="authentication-body">
+    <div class="authentication-wrapper">
+        <main>
+			<div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+			<h1>Sign In</h1>
+			<form method="post" th:action="@{/authenticating}">
+				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+				<div class="field-validation-error"></div>
+				<input type="text" name="username" id="username" placeholder="username" autocomplete="off"/>
+				<input type="password" name="password" id="password" placeholder="password"/>
+				<select name="role" id="role">
+					<option name="role" value=null>Select Role..</option>
+					<option name="role" value="Admin">Admin</option>
+					<option name="role" value="Seller">Seller</option>
+					<option name="role" value="Buyer">Buyer</option>
+				</select>
+				<button type="submit">sign in</button>
+			</form>
+			<div class="link-container">
+				<div>
+					<a th:href="@{/account/register(role=Buyer)}">Register as Buyer</a>
+				</div>
+				<div>
+					<a th:href="@{/account/register(role=Seller)}">Register as Seller</a>
+				</div>
+			</div>
+        </main>
+    </div>
+	<script th:src="@{/js/login.js}"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{layout :: head}">
+</head>
+<body>
+    <header th:replace="~{layout :: header}"></header>
+    <nav th:replace="~{layout :: nav}"></nav>
+    <main>
+        <div th:replace="~{layout :: menu}"></div>
+        <form method="post" class="upsert-form" th:action="@{/merchandise/merchandise-form}"  th:object="${dto}">
+			<input type="hidden" name="merchandiseId" th:value="*{merchandiseId}"/>
+			<input type="hidden" name="sellerUsername" th:value="${#authentication.getPrincipal().getUsername()}" />
+		    <table>
+		        <tbody>   
+                    <tr>
+		                <td><label>Name*</label></td>
+		                <td>
+		                    <input type="text" id="merchandiseName" name="merchandiseName" th:value="*{merchandiseName}">
+		                	<div class="field-validation-error" th:errors="*{merchandiseName}"></div>
+		                </td>
+		            </tr>
+                    <tr>
+		                <td><label>Category*</label></td>
+		                <td>
+		                    <select th:name="categoryId">
+                                <option th:value=null>Select Category</option>
+                                <option
+                                    th:each="category:${categoryOptions}"
+                                    th:object="${category}"
+                                    th:value="*{categoryId}"
+                                    th:text="*{categoryName}"
+                                    th:selected="*{isSelected}"
+                                ></option>
+                            </select>
+		                	<div class="field-validation-error" th:errors="*{categoryId}"></div>
+		                </td>
+		            </tr>
+                    <tr>
+		                <td><label>Description</label></td>
+		                <td>
+		                    <textarea name="description" id="description" th:text="*{description}"></textarea>
+		                	<div class="field-validation-error" th:errors="*{description}"></div>
+		                </td>
+		            </tr>
+		            <tr>
+		                <td><label>Price*</label></td>
+		                <td>
+		                    <input type="number" id="price" name="price" th:value="*{price}">
+		                	<div class="field-validation-error" th:errors="*{price}"></div>
+		                </td>
+		            </tr>              
+		            <tr>
+		                <td><label>Discontinue</label></td>
+		                <td>
+		                    <input type="checkbox" id="discontinue" name="discontinue" th:checked="*{discontinue}">
+		                </td>
+		            </tr>
+		        </tbody>
+		    </table>
+		    <button class="green-button" type="submit">Save</button>
+            <a class="green-button" th:href="@{/merchandise(username=${#authentication.getPrincipal().getUsername()})}">Cancel</a>
+		</form>
+    </main>
+</body>
+</html>
